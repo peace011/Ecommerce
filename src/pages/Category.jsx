@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { SearchOutlined } from '@mui/icons-material';
 import { FavoriteBorderOutlined } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const Category = () => {
     const { id } = useParams();
@@ -71,9 +72,10 @@ const Category = () => {
                             <img src={`/${product.img}`} className='w-[100%] h-[100%]' alt={`Product ${product.id}`} />
                                 <div className="info w-[100%] h-[100%] bg-gray-1000 absolute top-0 left-0 z-3 flex items-center justify-center bg-black opacity-5 hover:opacity-50 transform transition-transform ease-in-out duration-500">
                                     <div className='w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center m-[10px] hover:bg-white transform hover:scale-110 transition-transform ease-in-out duration-500'><ShoppingCartOutlined /></div>
-                                    <div className='w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center m-[10px] hover:bg-white transform hover:scale-110 transition-transform ease-in-out duration-500'><SearchOutlined /></div>
+                                    <div className='w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center m-[10px] hover:bg-white transform hover:scale-110 transition-transform ease-in-out duration-500'>  <Link to={`/category/${category.id}/product/${product.id}`}><SearchOutlined /></Link></div>
                                     <div className='w-[40px] h-[40px] bg-white rounded-full flex items-center justify-center m-[10px] hover:bg-white transform hover:scale-110 transition-transform ease-in-out duration-500'><FavoriteBorderOutlined /></div>
                                 </div>
+                                <div className="name font-normal text-xl relative flex justify-center">{product.name}</div>
                             </div>
                         </div>
                     ))}

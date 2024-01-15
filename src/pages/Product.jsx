@@ -5,20 +5,47 @@ import Announcement from '../components/Announcement'
 import Newsletter from '../components/Newsletter'
 import Footer from '../components/Footer'
 import { AddOutlined, RemoveOutlined } from '@mui/icons-material'
+import { useParams } from 'react-router-dom'
+import { categories } from '../data'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addcart } from '../store/slice/CartSlice'
 
 const Product = () => {
+  const {id,productid}=useParams();
+
+  const category = categories.find((cat) => cat.id.toString()===id) || {};
+
+  const product = category.product.find((product) => product.id.toString() === productid) || {};
+
+ 
+  const dispatch=useDispatch();
+
+  const addToCart=(product)=>{
+    // setCart([...cart, product]);
+    console.log(product);
+    dispatch(addcart(product));
+  }
+
+  const cartCount=useSelector((state)=>{
+   return state.carts.count;
+    console.log(state.carts.count);
+  } 
+  )
+
+ 
   return (
-    <div>
+   <div>
      <Announcement/>
        <Navbar/>
        <div className="wrapper p-[50px] flex">
             <div className="img flex-1 mr-[64px]">
-                <img src="https://plus.unsplash.com/premium_photo-1674719144570-0728faf14f96?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGNvYXR8ZW58MHx8MHx8fDA%3D" className='w-[100%] h-[90vh] object-cover'/>
+                <img src={`/${product.img}`} className='w-[100%] h-[90vh] object-cover'/>
                 </div>
                  <div className="infocontaie flex-1">
-                    <div className="title font-medium text-4xl mb-[20px]">Long Coat</div>
-                    <div className="desc mb-[20px]">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos laboriosam voluptates, excepturi animi illo qui minima corporis iure nihil! Temporibus repellat iste magni perspiciatis excepturi, ut mollitia eos veniam cupiditate.</div>
-                    <div className="price mb-[20px] text-[38px]">Rs. 4400</div>
+                    <div className="title font-medium text-4xl mb-[20px]">{product.name}</div>
+                    <div className="desc mb-[20px]">{product.description}</div>
+                    <div className="price mb-[20px] text-[38px]">{product.price}</div>
 
                 <div className="select flex">
                <div className="filtercontainer p-2 mr-[120px] flex">Color:
@@ -40,17 +67,17 @@ const Product = () => {
                     </div>
                    <div className="addcontainer flex items-center w-[50%] mt-[24px]">
                         <div className="amtcontainer flex">
-                            <div className="remove mr-[12px]"><RemoveOutlined/></div>
-                            <div className="amt border h-[30px] w-[30px] border-teal-700 rounded-md p-1 mr-[12px] flex justify-center items-center font-bold text-[18px]">1</div>
+                            <div className="remove mr-[12px]" ><RemoveOutlined/></div>
+                            <div className="amt border h-[30px] w-[30px] border-teal-700 rounded-md p-1 mr-[12px] flex justify-center items-center font-bold text-[18px]">{cartCount}</div>
                             <div className="add mr-[12px]"><AddOutlined/></div>
-                            <div className="button border border-gray-500 bg-gray-200 p-2 ">Add to Cart</div>
+                            <div className="button border border-gray-500 bg-gray-200 p-2 hover:bg-gray-600 hover:text-white" onClick={() => addToCart(product)}>Add to Cart</div>
                         </div>
                    </div>
                 </div>
             
        </div>
        <Newsletter/>
-       <Footer/>
+       <Footer/>  
     </div>
   )
 }
