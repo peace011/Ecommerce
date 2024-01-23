@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom'
 import { categories } from '../data'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addcart } from '../store/slice/CartSlice'
+import { addcart, decreaseCart, increaseCart, removecart } from '../store/slice/CartSlice'
 
 const Product = () => {
   const {id,productid}=useParams();
@@ -20,11 +20,14 @@ const Product = () => {
 
  
   const dispatch=useDispatch();
-
   const addToCart=(product)=>{
-    // setCart([...cart, product]);
     console.log(product);
     dispatch(addcart(product));
+  }
+
+
+  const removeToCart=(product)=>{
+    dispatch(removecart(product));
   }
 
   const cartCount=useSelector((state)=>{
@@ -32,6 +35,23 @@ const Product = () => {
     console.log(state.carts.count);
   } 
   )
+  
+  const increaseToCart=(product)=>{
+    console.log(product);
+    dispatch(increaseCart(product));
+  }
+
+  const decreaseToCart=(product)=>{
+    console.log(product);
+    dispatch(decreaseCart(product));
+  }
+
+  const data=useSelector((state)=>{
+    return state.carts.items;
+  })
+  // Find the product in the cart data and get its quantity
+  const productInCart = data.find((item) => item.id === product.id);
+  const productQuantityInCart = productInCart ? productInCart.quantity : 0;
 
  
   return (
@@ -65,13 +85,16 @@ const Product = () => {
                         <option value="xl">xl</option>
                     </select>
                     </div>
+                  
+
                    <div className="addcontainer flex items-center w-[50%] mt-[24px]">
                         <div className="amtcontainer flex">
-                            <div className="remove mr-[12px]" ><RemoveOutlined/></div>
-                            <div className="amt border h-[30px] w-[30px] border-teal-700 rounded-md p-1 mr-[12px] flex justify-center items-center font-bold text-[18px]">{cartCount}</div>
-                            <div className="add mr-[12px]"><AddOutlined/></div>
+                            <div className="remove mr-[12px]" ><RemoveOutlined onClick={() => decreaseToCart(product)}/></div>
+                            <div className="amt border h-[30px] w-[30px] border-teal-700 rounded-md p-1 mr-[12px] flex justify-center items-center font-bold text-[18px]"> {productQuantityInCart}</div>
+                            <div className="add mr-[12px]"><AddOutlined onClick={() => increaseToCart(product)}/></div>
+
                             <div className="button border border-gray-500 bg-gray-200 p-2 hover:bg-gray-600 hover:text-white" onClick={() => addToCart(product)}>Add to Cart</div>
-                        </div>
+                             </div>    
                    </div>
                 </div>
             

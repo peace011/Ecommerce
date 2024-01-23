@@ -40,10 +40,27 @@ const cartSlice = createSlice({
         ...state,
         items: state.items.filter((item) => item.id !== itemIdToRemove),
         count: state.count - 1,
+      };   
+    },
+    decreaseCart(state,action){
+      const itemToDecrease=action.payload;
+      return {...state,
+        items:state.items.map((item)=>item.id===itemToDecrease.id? {...item, quantity:item.quantity-1} : item),
+        count: state.count-1,
+      
+      };
+    },
+    increaseCart(state,action){
+      const itemToIncrease=action.payload;
+      return {...state,
+        items:state.items.map((item)=>item.id===itemToIncrease.id? {...item, quantity:item.quantity+1} : item),
+        count: state.count-1,
+      
       };
     },
   },
 });
 
-export const { addcart, removecart } = cartSlice.actions;
+export const { addcart, removecart , decreaseCart, increaseCart} = cartSlice.actions;
 export default cartSlice.reducer;
+
